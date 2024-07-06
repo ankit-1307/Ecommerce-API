@@ -29,14 +29,21 @@ const getSingleProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     const { id: productId } = req.params;
-    const product = await Product.findOne({ _id: productId });
+    let product = await Product.findById({ _id: productId });
     if (!product) {
         throw new customError.NotFoundError(
             `No product found fot the matching product id: ${productId}`
         );
     }
     checkOwnership(req.user.userId, product.user);
-    res.status(StatusCodes.CREATED).json("updateProduct");
+    product = await Product.findOneAndUpdate({ _id: productId }, req.body, {
+        new: true,
+        runValidators: true,
+    });
+    res.status(StatusCodes.CREATED).json({
+        msg: "Product updated successfully! ",
+        product,
+    });
 };
 const deleteProduct = async (req, res) => {
     res.status(StatusCodes.CREATED).json("deleteProduct");
