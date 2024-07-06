@@ -1,7 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const Product = require("../models/Product");
 const customError = require("../errors");
-const { checkOwnership, upload } = require("../utils");
+const { checkOwnership, upload, uploadCloudinary } = require("../utils");
+const path = require("path");
+const fs = require("fs");
 
 const createProduct = async (req, res) => {
     const product = await Product.create({
@@ -60,19 +62,33 @@ const deleteProduct = async (req, res) => {
     res.status(StatusCodes.OK).json({ msg: "Product removed successfully!" });
 };
 const uploadImage = async (req, res) => {
-    upload.array("images", 5)(req, res, (err) => {
+    upload.array("images", 5)(req, res, async (err) => {
         if (err) {
             res.status(400).send({ message: err });
         } else {
             if (req.files == undefined) {
                 res.status(400).send({ message: "No file selected!" });
             } else {
+                //successfully uploading the files
+
                 const filePaths = req.files.map(
-                    (file) => `uploads/${file.filename}`
+                    (file) => `/uploads/${file.filename}`
                 );
+                const arrCloudUrl = await Promise.all(
+                    filePaths.map(async (eachFile) => {
+                        const cloudUrl = await uploadCloudinary(
+                            path.join(__dirname, "../public", eachFile)
+                        );
+                        fs.unlinkSync(
+                            path.join(__dirname, "../public", eachFile)
+                        );
+                        return cloudUrl;
+                    })
+                );
+                console.log(arrCloudUrl);
                 res.send({
                     message: "File uploaded successfully!",
-                    file: filePaths,
+                    file: arrCloudUrl,
                 });
             }
         }
