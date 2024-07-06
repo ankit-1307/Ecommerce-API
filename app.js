@@ -1,6 +1,6 @@
 require("dotenv").config();
 require("express-async-errors");
-
+const path = require('path')
 const express = require("express");
 const app = express();
 
@@ -12,7 +12,7 @@ const cookieParser = require("cookie-parser");
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
-
+app.use(express.static(path.join(__dirname, "./public")));
 //DB connection
 const connectDB = require("./db/connect");
 

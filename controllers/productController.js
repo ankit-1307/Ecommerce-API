@@ -1,7 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const Product = require("../models/Product");
 const customError = require("../errors");
-const { checkOwnership } = require("../utils");
+const { checkOwnership, upload } = require("../utils");
 
 const createProduct = async (req, res) => {
     const product = await Product.create({
@@ -24,7 +24,7 @@ const getSingleProduct = async (req, res) => {
             `No product found fot the matching product id: ${productId}`
         );
     }
-    res.status(StatusCodes.CREATED).json({ product });
+    res.status(StatusCodes.OK).json({ product });
 };
 
 const updateProduct = async (req, res) => {
@@ -35,21 +35,48 @@ const updateProduct = async (req, res) => {
             `No product found fot the matching product id: ${productId}`
         );
     }
+    //only created admin can update
     checkOwnership(req.user.userId, product.user);
     product = await Product.findOneAndUpdate({ _id: productId }, req.body, {
         new: true,
         runValidators: true,
     });
-    res.status(StatusCodes.CREATED).json({
+    res.status(StatusCodes.OK).json({
         msg: "Product updated successfully! ",
         product,
     });
 };
 const deleteProduct = async (req, res) => {
-    res.status(StatusCodes.CREATED).json("deleteProduct");
+    const { id: productId } = req.params;
+    let product = await Product.findById({ _id: productId });
+    if (!product) {
+        throw new customError.NotFoundError(
+            `No product found fot the matching product id: ${productId}`
+        );
+    }
+    //only created admin can update
+    checkOwnership(req.user.userId, product.user);
+    await product.deleteOne();
+    res.status(StatusCodes.OK).json({ msg: "Product removed successfully!" });
 };
 const uploadImage = async (req, res) => {
-    res.status(StatusCodes.CREATED).json("uploadImage");
+    upload.array("images", 5)(req, res, (err) => {
+        if (err) {
+            res.status(400).send({ message: err });
+        } else {
+            if (req.files == undefined) {
+                res.status(400).send({ message: "No file selected!" });
+            } else {
+                const filePaths = req.files.map(
+                    (file) => `uploads/${file.filename}`
+                );
+                res.send({
+                    message: "File uploaded successfully!",
+                    file: filePaths,
+                });
+            }
+        }
+    });
 };
 
 module.exports = {
