@@ -67,7 +67,9 @@ const uploadImage = async (req, res) => {
             res.status(400).send({ message: err });
         } else {
             if (req.files == undefined) {
-                res.status(400).send({ message: "No file selected!" });
+                res.status(StatusCodes.BAD_REQUEST).json({
+                    message: "No file selected!",
+                });
             } else {
                 //successfully uploading the files
 
@@ -82,13 +84,13 @@ const uploadImage = async (req, res) => {
                         fs.unlinkSync(
                             path.join(__dirname, "../public", eachFile)
                         );
-                        return cloudUrl;
+                        return cloudUrl.url;
                     })
                 );
                 console.log(arrCloudUrl);
-                res.send({
+                res.status(StatusCodes.CREATED).json({
                     message: "File uploaded successfully!",
-                    file: arrCloudUrl,
+                    images: arrCloudUrl,
                 });
             }
         }
