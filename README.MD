@@ -206,33 +206,35 @@
 
 #### Remaining Controllers (apart from uploadImage)
 
--   [] getAllProducts
--   [] getSingleProduct
--   [] updateProduct
--   [] deleteProduct
--   [] typical CRUD, utilize (task or job) project
--   [] remember we check already for role 'admin'
+-   [✔️] getAllProducts
+-   [✔️] getSingleProduct
+-   [✔️] updateProduct
+-   [✔️] deleteProduct
+-   [✔️] typical CRUD, utilize (task or job) project
+-   [✔️] remember we check already for role 'admin'
 
 #### Upload Image
 
--   [] if some question, re-watch 07-file-upload
--   [] images folder with two images
+-   [✔️] if some question, re-watch 07-file-upload
+-   [✔️] images folder with two images
+-   [✔️] implement the logic using multer for single and multiple file uploads
+-   [✔️] upload the image from local to cloudinary
 
 #### Review Model
 
--   [] create Review.js in models folder
--   [] create Schema
--   [] rating : {type:Number}
--   [] title: {type:String}
--   [] comment: {type:String}
--   [] user
--   [] product
--   [] set timestamps
--   [] export Review model
+-   [✔️] create Review.js in models folder
+-   [✔️] create Schema
+-   [✔️] rating : {type:Number}
+-   [✔️] title: {type:String}
+-   [✔️] comment: {type:String}
+-   [✔️] user
+-   [✔️] product
+-   [✔️] set timestamps
+-   [✔️] export Review model
 
 #### Review Structure
 
--   [] add reviewController file in controllers
+-   [✔️] add reviewController file in controllers
 -   [] export (createReview, getAllReviews, getSingleReview, updateReview, deleteReview) functions
 -   [] res.send('function name')
 -   [] setup reviewRoutes file in routes
