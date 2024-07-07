@@ -72,7 +72,6 @@ const uploadImage = async (req, res) => {
                 });
             } else {
                 //successfully uploading the files
-
                 const filePaths = req.files.map(
                     (file) => `/uploads/${file.filename}`
                 );
@@ -87,7 +86,6 @@ const uploadImage = async (req, res) => {
                         return cloudUrl.url;
                     })
                 );
-                console.log(arrCloudUrl);
                 res.status(StatusCodes.CREATED).json({
                     message: "File uploaded successfully!",
                     images: arrCloudUrl,
