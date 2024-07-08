@@ -243,18 +243,18 @@
 -   [✔️] rest only to users (setup authorization middleware)
 -   [✔️] typical REST setup
 -   [✔️] import reviewRoutes as reviewRouter in the app.js
--   [] setup app.use('/api/v1/reviews', reviewRouter)
+-   [✔️] setup app.use('/api/v1/reviews', reviewRouter)
 
 #### Create Review
 
--   [] check for product in the req.body
--   [] attach user property (set it equal to req.user.userId) on to req.body
--   [] create review
--   [] don't test yet
+-   [✔️] check for product in the req.body
+-   [✔️] attach user property (set it equal to req.user.userId) on to req.body
+-   [✔️] create review
+-   [✔️] don't test yet
 
 #### Get All Reviews and Get Single Review
 
--   [] both public routes, typical setup
+-   [✔️] both public routes, typical setup
 
 #### Delete Review
 
